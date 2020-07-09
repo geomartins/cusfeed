@@ -4,6 +4,8 @@ import '../../components/reusable_custom_drawer.dart';
 import '../../config/constants.dart';
 
 class Success extends StatefulWidget {
+  static const String id = '/success';
+
   @override
   _SuccessState createState() => _SuccessState();
 }
@@ -22,7 +24,7 @@ class _SuccessState extends State<Success> {
         backgroundColor: Colors.white,
         elevation: 0.0,
         iconTheme: IconThemeData(
-          color: Colors.teal,
+          color: kPrimaryColor,
         ),
       ),
       drawer: ReusableCustomDrawer(
@@ -42,7 +44,7 @@ class _SuccessState extends State<Success> {
                 width: deviceWidth,
                 alignment: Alignment.center,
                 child: CircleAvatar(
-                  backgroundColor: Colors.teal,
+                  backgroundColor: kPrimaryColor,
                   maxRadius: 40.0,
                   child: Icon(
                     FontAwesome.check,

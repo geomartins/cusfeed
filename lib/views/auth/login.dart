@@ -1,14 +1,61 @@
+import 'dart:math';
+import 'package:cusfeed/app/services/auth_service.dart';
 import 'package:cusfeed/config/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:loading_overlay/loading_overlay.dart';
+import './password_reset.dart';
+import '../admin/dashboard.dart';
+import '../../app/repositories/pick.dart';
 
 class Login extends StatefulWidget {
+  static const String id = '/login';
+
   @override
   _LoginState createState() => _LoginState();
 }
 
-class _LoginState extends State<Login> {
+class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
+  AnimationController controller;
+  Animation animation;
+
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
+
+  String email;
+  String password;
+
+  bool isLoading = false;
+
+  @override
+  void initState() {
+    controller = AnimationController(
+      vsync: this,
+      duration: Duration(seconds: 3),
+    );
+
+    animation = CurvedAnimation(
+      parent: controller,
+      curve: Curves.decelerate,
+    );
+
+    controller.addListener(() {
+      setState(() {});
+      print(controller.value);
+    });
+
+    controller.forward();
+
+    // TODO: implement initState
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    // TODO: implement dispose
+    super.dispose();
+  }
+
   final _formKey = GlobalKey<FormState>();
 
   bool obscureStatus = true;
@@ -22,12 +69,13 @@ class _LoginState extends State<Login> {
   Widget build(BuildContext context) {
     double deviceWidth = MediaQuery.of(context).size.width;
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
         elevation: 0.0,
         backgroundColor: Colors.transparent,
       ),
       body: LoadingOverlay(
-        isLoading: false,
+        isLoading: isLoading,
         progressIndicator: kLoadingProgressIndicator,
         color: kLoadingOverlayColor,
         child: SafeArea(
@@ -37,7 +85,7 @@ class _LoginState extends State<Login> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
-                Image.asset(kAppLogo, height: kAppLogoHeight),
+                Image.asset(kAppLogo, height: animation.value * kAppLogoHeight),
                 Container(
                   margin: EdgeInsets.symmetric(vertical: 5.0),
                   child: Text(
@@ -81,19 +129,18 @@ class _LoginState extends State<Login> {
                       Container(
                         margin: EdgeInsets.symmetric(vertical: 3.0),
                         child: TextFormField(
-                          style: TextStyle(),
-                          decoration: InputDecoration(
-                            hintText: 'Email',
-                            fillColor: Colors.grey.withOpacity(0.2),
-                            border: InputBorder.none,
-                            filled: true,
-                          ),
+                          decoration:
+                              kInputDecoration.copyWith(hintText: 'Email'),
                           // The validator receives the text that the user has entered.
                           validator: (value) {
                             if (value.isEmpty) {
-                              return 'Please enter some text';
+                              return 'Please enter valid email address';
                             }
                             return null;
+                          },
+                          onChanged: (value) {
+                            email = value.trim();
+                            print(email);
                           },
                         ),
                       ),
@@ -101,12 +148,8 @@ class _LoginState extends State<Login> {
                         margin: EdgeInsets.symmetric(vertical: 3.0),
                         child: TextFormField(
                           obscureText: obscureStatus,
-                          style: TextStyle(),
-                          decoration: InputDecoration(
+                          decoration: kInputDecoration.copyWith(
                             hintText: 'Password',
-                            fillColor: Colors.grey.withOpacity(0.2),
-                            border: InputBorder.none,
-                            filled: true,
                             suffixIcon: GestureDetector(
                               onTap: _toggleVisibility,
                               child: Icon(
@@ -120,9 +163,13 @@ class _LoginState extends State<Login> {
                           // The validator receives the text that the user has entered.
                           validator: (value) {
                             if (value.isEmpty) {
-                              return 'Please enter some text';
+                              return 'Please enter valid password';
                             }
                             return null;
+                          },
+                          onChanged: (value) {
+                            password = value.trim();
+                            print(password);
                           },
                         ),
                       ),
@@ -131,14 +178,14 @@ class _LoginState extends State<Login> {
                         children: <Widget>[
                           GestureDetector(
                             onTap: () {
-                              Navigator.pushNamed(context, '/password_reset');
+                              Navigator.pushNamed(context, PasswordReset.id);
                             },
                             child: Container(
                               child: Text(
                                 'Forget your password?',
                                 style: TextStyle(
                                   fontFamily: kFontFamilyLight,
-                                  color: Colors.teal,
+                                  color: kPrimaryColor,
                                   fontSize: 13.0,
                                 ),
                               ),
@@ -149,15 +196,38 @@ class _LoginState extends State<Login> {
                       Container(
                         width: deviceWidth,
                         margin: EdgeInsets.symmetric(vertical: 15.0),
-                        child: FlatButton(
-                          color: Colors.teal,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(0.0)),
-                          textColor: Colors.white,
-                          onPressed: () {
-                            Navigator.pushNamed(context, '/dashboard');
-                          },
-                          child: Text('Login'),
+                        child: Builder(
+                          builder: (context) => FlatButton(
+                            color: kPrimaryColor,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(0.0)),
+                            textColor: Colors.white,
+                            onPressed: () async {
+                              setState(() {
+                                isLoading = true;
+                              });
+                              if (_formKey.currentState.validate()) {
+                                try {
+                                  final result = await AuthService()
+                                      .login(email: email, password: password);
+                                  Navigator.pushNamed(context, Dashboard.id);
+                                } catch (e) {
+                                  String errorMessage =
+                                      mPick.errorLog(code: e.code).toString();
+
+                                  mPick.notify(
+                                      context: context,
+                                      message: errorMessage,
+                                      color: Colors.red);
+                                }
+                              }
+
+                              setState(() {
+                                isLoading = false;
+                              });
+                            },
+                            child: Text('Login'),
+                          ),
                         ),
                       ),
                     ],

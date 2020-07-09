@@ -13,67 +13,76 @@ import './views/admin/dashboard.dart';
 import './views/admin/history.dart';
 import './views/admin/profile.dart';
 import './views/admin/success.dart';
+import 'package:simple_router/simple_router.dart';
 
 void main() async {
+  SimpleRouter.onBeforePush = (widget) {
+    print('[Router]: Navigated to ${widget.toString()}');
+  };
+  SimpleRouter.onAfterPush = (widget) {
+    print('[Router]: Navigated out of ${widget.toString()}');
+  };
+
   runApp(
     new MaterialApp(
-        title: 'CusFeed',
-        theme: ThemeData(
-          buttonColor: Colors.teal,
-          primaryColor: Color(0xFFAFB42B),
-          accentColor: Color(0xFFFFC107),
-          dividerColor: Color(0xFFBDBDBD),
-          textTheme: TextTheme(
-            headline: TextStyle(
-              color: Color(0xFF212121),
-              fontFamily: kFontFamily,
-            ),
-            title: TextStyle(
-              color: Color(0xFF212121),
-              fontFamily: kFontFamily,
-            ),
-            subtitle: TextStyle(
-              color: Color(0xFF757575),
-              fontFamily: kFontFamily,
-            ),
-            button: TextStyle(
-              color: Color(0xFF212121),
-              fontFamily: kFontFamily,
-            ),
-            body1: TextStyle(
-              color: Color(0xFF212121),
-              fontFamily: kFontFamily,
-            ),
-            body2: TextStyle(
-              color: Color(0xFF212121),
-              fontFamily: kFontFamily,
-            ),
-          ),
-          iconTheme: IconThemeData(
+      title: 'CusFeed',
+      theme: ThemeData(
+        buttonColor: kPrimaryColor,
+        primaryColor: Color(0xFFAFB42B),
+        accentColor: Color(0xFFFFC107),
+        dividerColor: Color(0xFFBDBDBD),
+        textTheme: TextTheme(
+          headline: TextStyle(
             color: Color(0xFF212121),
+            fontFamily: kFontFamily,
+          ),
+          title: TextStyle(
+            color: Color(0xFF212121),
+            fontFamily: kFontFamily,
+          ),
+          subtitle: TextStyle(
+            color: Color(0xFF757575),
+            fontFamily: kFontFamily,
+          ),
+          button: TextStyle(
+            color: Color(0xFF212121),
+            fontFamily: kFontFamily,
+          ),
+          body1: TextStyle(
+            color: Color(0xFF212121),
+            fontFamily: kFontFamily,
+          ),
+          body2: TextStyle(
+            color: Color(0xFF212121),
+            fontFamily: kFontFamily,
           ),
         ),
-        initialRoute: '/intro',
-        routes: {
-          '/intro': (BuildContext ctx) => Intro(),
-          '/welcome': (BuildContext ctx) => Welcome(),
-          '/register': (BuildContext ctx) => Register(),
-          '/login': (BuildContext ctx) => Login(),
-          '/password_reset': (BuildContext ctx) => PasswordReset(),
-          '/change_password': (BuildContext ctx) => ChangePassword(),
-          '/contact_us': (BuildContext ctx) => ContactUs(),
-          '/dashboard': (BuildContext ctx) => Dashboard(),
-          '/history': (BuildContext ctx) => History(),
-          '/profile': (BuildContext ctx) => Profile(),
-          '/success': (BuildContext ctx) => Success(),
-        },
-        onUnknownRoute: (RouteSettings setting) {
-          String unknownRoute = setting.name;
-          print(unknownRoute);
-          return new MaterialPageRoute(
-            builder: (context) => PageNotFound(),
-          );
-        }),
+        iconTheme: IconThemeData(
+          color: Color(0xFF212121),
+        ),
+      ),
+      initialRoute: Intro.id,
+      routes: {
+        Intro.id: (BuildContext ctx) => Intro(),
+        Welcome.id: (BuildContext ctx) => Welcome(),
+        Register.id: (BuildContext ctx) => Register(),
+        Login.id: (BuildContext ctx) => Login(),
+        PasswordReset.id: (BuildContext ctx) => PasswordReset(),
+        ChangePassword.id: (BuildContext ctx) => ChangePassword(),
+        ContactUs.id: (BuildContext ctx) => ContactUs(),
+        Dashboard.id: (BuildContext ctx) => Dashboard(),
+        History.id: (BuildContext ctx) => History(),
+        Profile.id: (BuildContext ctx) => Profile(),
+        Success.id: (BuildContext ctx) => Success(),
+      },
+      onUnknownRoute: (RouteSettings setting) {
+        String unknownRoute = setting.name;
+        print(unknownRoute);
+        return new MaterialPageRoute(
+          builder: (context) => PageNotFound(),
+        );
+      },
+    ),
   );
 }
 

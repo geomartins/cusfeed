@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "440148160842",
+    "firebase_url": "https://cusfeed-793d8.firebaseio.com",
+    "project_id": "cusfeed-793d8",
+    "storage_bucket": "cusfeed-793d8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:440148160842:android:7fd8d2c2d100cb09c111b3",
+        "android_client_info": {
+          "package_name": "com.nairafox.cusfeed"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "440148160842-dmo6ahf7fq807tpf92gf64hicrav3l5h.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDYgKJEHJfL_j1Spja_wn3HPyweRykZzWQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "440148160842-dmo6ahf7fq807tpf92gf64hicrav3l5h.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -10,3 +10,13 @@ const kAppLogoHeight = 70.0;
 const kAppSplashScreenImage = 'assets/images/android6.png';
 const kDeveloperEmail = 'martinsabiodun94@gmail.com';
 const kDeveloperTelephone = '08065189341';
+
+const kPrimaryColor = Colors.teal;
+const kSecondaryColor = Colors.teal;
+const kTertiaryColor = Colors.teal;
+const kInputDecoration = InputDecoration(
+  hintText: '',
+//  fillColor: Colors.grey.withOpacity(0.2),
+  border: InputBorder.none,
+  filled: true,
+);

@@ -1,15 +1,56 @@
+import 'dart:math';
+import 'package:cusfeed/app/services/auth_service.dart';
 import 'package:cusfeed/config/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:loading_overlay/loading_overlay.dart';
+import '../auth/login.dart';
+import '../../app/repositories/pick.dart';
 
 class PasswordReset extends StatefulWidget {
+  static const String id = '/password_reset';
   @override
   _PasswordResetState createState() => _PasswordResetState();
 }
 
-class _PasswordResetState extends State<PasswordReset> {
+class _PasswordResetState extends State<PasswordReset>
+    with SingleTickerProviderStateMixin {
   final _formKey = GlobalKey<FormState>();
+  String email;
+  bool isLoading = false;
+
+  AnimationController controller;
+  Animation animation;
+
+  @override
+  void initState() {
+    controller = AnimationController(
+      vsync: this,
+      duration: Duration(seconds: 2),
+    );
+
+    animation = CurvedAnimation(
+      parent: controller,
+      curve: Curves.decelerate,
+    );
+
+    controller.addListener(() {
+      setState(() {});
+      print(controller.value);
+    });
+
+    controller.forward();
+
+    // TODO: implement initState
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    // TODO: implement dispose
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +62,7 @@ class _PasswordResetState extends State<PasswordReset> {
         backgroundColor: Colors.transparent,
       ),
       body: LoadingOverlay(
-        isLoading: false,
+        isLoading: isLoading,
         progressIndicator: kLoadingProgressIndicator,
         color: kLoadingOverlayColor,
         child: SafeArea(
@@ -35,7 +76,7 @@ class _PasswordResetState extends State<PasswordReset> {
                 SizedBox(
                   height: deviceHeight / 3,
                 ),
-                Image.asset(kAppLogo, height: kAppLogoHeight),
+                Image.asset(kAppLogo, height: kAppLogoHeight * animation.value),
                 Container(
                   margin: EdgeInsets.symmetric(vertical: 5.0),
                   child: Text(
@@ -69,31 +110,69 @@ class _PasswordResetState extends State<PasswordReset> {
                         margin: EdgeInsets.symmetric(vertical: 3.0),
                         child: TextFormField(
                           style: TextStyle(),
-                          decoration: InputDecoration(
+                          decoration: kInputDecoration.copyWith(
                             hintText: 'Email Address',
-                            fillColor: Colors.grey.withOpacity(0.2),
-                            border: InputBorder.none,
-                            filled: true,
                           ),
                           // The validator receives the text that the user has entered.
                           validator: (value) {
                             if (value.isEmpty) {
-                              return 'Please enter some text';
+                              return 'Please valid email address';
                             }
                             return null;
+                          },
+                          onChanged: (value) {
+                            email = value.trim();
                           },
                         ),
                       ),
                       Container(
                         width: deviceWidth,
                         margin: EdgeInsets.symmetric(vertical: 15.0),
-                        child: FlatButton(
-                          color: Colors.teal,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(0.0)),
-                          textColor: Colors.white,
-                          onPressed: () {},
-                          child: Text('Reset Password'),
+                        child: Builder(
+                          builder: (context) => FlatButton(
+                            color: kPrimaryColor,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(0.0)),
+                            textColor: Colors.white,
+                            onPressed: () async {
+                              setState(() {
+                                isLoading = true;
+                              });
+
+                              if (_formKey.currentState.validate()) {
+                                try {
+                                  final result = await AuthService()
+                                      .passwordReset(email: email);
+
+                                  //display success message
+                                  mPick.notify(
+                                      context: context,
+                                      message: 'Password reset successful',
+                                      color: Colors.green);
+
+                                  //Delay the navigation for 3 seconds
+                                  await Future.delayed(Duration(seconds: 3));
+
+                                  //Navigate back to login page
+                                  Navigator.pushNamed(context, Login.id);
+                                } catch (e) {
+                                  String errorMessage =
+                                      mPick.errorLog(code: e.code).toString();
+
+                                  //display error message
+                                  mPick.notify(
+                                      context: context,
+                                      message: errorMessage,
+                                      color: Colors.red);
+                                }
+                              }
+
+                              setState(() {
+                                isLoading = false;
+                              });
+                            },
+                            child: Text('Reset Password'),
+                          ),
                         ),
                       ),
                     ],

@@ -1,7 +1,11 @@
 import 'package:cusfeed/config/constants.dart';
 import 'package:flutter/material.dart';
+import '../views/auth/login.dart';
+import '../views/auth/register.dart';
 
 class Welcome extends StatefulWidget {
+  static const String id = '/welcome';
+
   @override
   _WelcomeState createState() => _WelcomeState();
 }
@@ -47,7 +51,7 @@ class _WelcomeState extends State<Welcome> {
                       padding: EdgeInsets.symmetric(vertical: 10.0),
 //                  shape: StadiumBorder(),
                       onPressed: () {
-                        Navigator.pushNamed(context, '/login');
+                        Navigator.pushNamed(context, Login.id);
                       },
                       child: Text(
                         'Login',
@@ -67,7 +71,7 @@ class _WelcomeState extends State<Welcome> {
                         color: Theme.of(context).buttonColor,
                       ),
                       onPressed: () {
-                        Navigator.pushNamed(context, '/register');
+                        Navigator.pushNamed(context, Register.id);
                       },
                       child: Text(
                         'Register',

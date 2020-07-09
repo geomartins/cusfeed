@@ -1,6 +1,13 @@
 import 'package:flutter/material.dart';
 import './reusable_drawer_menu.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
+import '../app/services/auth_service.dart';
+import '../views/admin/dashboard.dart';
+import '../views/admin/profile.dart';
+import '../views/admin/history.dart';
+import '../views/admin/change_password.dart';
+import '../views/auth/login.dart';
+import '../views/admin/contact_us.dart';
 
 class ReusableCustomDrawer extends StatelessWidget {
   ReusableCustomDrawer({@required this.deviceWidth});
@@ -22,42 +29,44 @@ class ReusableCustomDrawer extends StatelessWidget {
               icon: FontAwesome.home,
               text: 'Dashboard',
               onPressed: () {
-                Navigator.pushNamed(context, '/dashboard');
+                Navigator.pushNamed(context, Dashboard.id);
               },
             ),
             ReusableDrawerMenu(
               icon: FontAwesome.user,
               text: 'Profile',
               onPressed: () {
-                Navigator.pushNamed(context, '/profile');
+                Navigator.pushNamed(context, Profile.id);
               },
             ),
             ReusableDrawerMenu(
               icon: FontAwesome.history,
               text: 'History',
               onPressed: () {
-                Navigator.pushNamed(context, '/history');
+                Navigator.pushNamed(context, History.id);
               },
             ),
             ReusableDrawerMenu(
               icon: FontAwesome.chain_broken,
               text: 'Password',
               onPressed: () {
-                Navigator.pushNamed(context, '/change_password');
+                Navigator.pushNamed(context, ChangePassword.id);
               },
             ),
             ReusableDrawerMenu(
               icon: Icons.contacts,
               text: 'Contact Us',
               onPressed: () {
-                Navigator.pushNamed(context, '/contact_us');
+                Navigator.pushNamed(context, ContactUs.id);
               },
             ),
             ReusableDrawerMenu(
               icon: FontAwesome.sign_out,
               text: 'Sign Out',
-              onPressed: () {
-                Navigator.pushNamed(context, '');
+              onPressed: () async {
+                AuthService authService = new AuthService();
+                await authService.logout();
+                Navigator.pushNamed(context, Login.id);
               },
             ),
           ],

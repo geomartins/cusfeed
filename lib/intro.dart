@@ -4,6 +4,7 @@ import 'views/welcome.dart';
 import 'config/constants.dart';
 
 class Intro extends StatefulWidget {
+  static const String id = '/intro';
   @override
   _IntroState createState() => new _IntroState();
 }

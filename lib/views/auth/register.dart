@@ -6,11 +6,52 @@ import 'package:flutter/gestures.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class Register extends StatefulWidget {
+  static const String id = '/register';
+
   @override
   _RegisterState createState() => _RegisterState();
 }
 
-class _RegisterState extends State<Register> {
+class _RegisterState extends State<Register>
+    with SingleTickerProviderStateMixin {
+  AnimationController controller;
+  Animation animation;
+
+  bool isLoading = false;
+  String email;
+  String password;
+  String company;
+
+  @override
+  void initState() {
+    controller = AnimationController(
+      vsync: this,
+      duration: Duration(seconds: 2),
+    );
+
+    animation = CurvedAnimation(
+      parent: controller,
+      curve: Curves.decelerate,
+    );
+
+    controller.addListener(() {
+      setState(() {});
+      print(controller.value);
+    });
+
+    controller.forward();
+
+    // TODO: implement initState
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    // TODO: implement dispose
+    super.dispose();
+  }
+
   final _formKey = GlobalKey<FormState>();
   final Widget defaultSizedBox = SizedBox(height: 25.0);
   bool obscureStatus = true;
@@ -41,7 +82,7 @@ class _RegisterState extends State<Register> {
         backgroundColor: Colors.transparent,
       ),
       body: LoadingOverlay(
-        isLoading: false,
+        isLoading: isLoading,
         progressIndicator: kLoadingProgressIndicator,
         color: kLoadingOverlayColor,
         child: SafeArea(
@@ -51,7 +92,11 @@ class _RegisterState extends State<Register> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
-                Image.asset(kAppLogo, height: kAppLogoHeight),
+                RotationTransition(
+                  turns: animation,
+                  child: Image.asset(kAppLogo,
+                      height: kAppLogoHeight * animation.value),
+                ),
                 Container(
                   margin: EdgeInsets.symmetric(vertical: 5.0),
                   child: Text(
@@ -84,17 +129,13 @@ class _RegisterState extends State<Register> {
                       Container(
                         margin: EdgeInsets.symmetric(vertical: 3.0),
                         child: TextFormField(
-                          style: TextStyle(),
-                          decoration: InputDecoration(
+                          decoration: kInputDecoration.copyWith(
                             hintText: 'What is your company name',
-                            fillColor: Colors.grey.withOpacity(0.2),
-                            border: InputBorder.none,
-                            filled: true,
                           ),
                           // The validator receives the text that the user has entered.
                           validator: (value) {
                             if (value.isEmpty) {
-                              return 'Please enter some text';
+                              return 'Please enter your company name';
                             }
                             return null;
                           },
@@ -115,32 +156,25 @@ class _RegisterState extends State<Register> {
                       Container(
                         margin: EdgeInsets.symmetric(vertical: 3.0),
                         child: TextFormField(
-                          style: TextStyle(),
-                          decoration: InputDecoration(
+                          decoration: kInputDecoration.copyWith(
                             hintText: 'Email',
-                            fillColor: Colors.grey.withOpacity(0.2),
-                            border: InputBorder.none,
-                            filled: true,
                           ),
                           // The validator receives the text that the user has entered.
                           validator: (value) {
                             if (value.isEmpty) {
-                              return 'Please enter some text';
+                              return 'Please enter valid email address';
                             }
                             return null;
                           },
+                          onChanged: (value) => email = value.trim(),
                         ),
                       ),
                       Container(
                         margin: EdgeInsets.symmetric(vertical: 3.0),
                         child: TextFormField(
                           obscureText: obscureStatus,
-                          style: TextStyle(),
-                          decoration: InputDecoration(
+                          decoration: kInputDecoration.copyWith(
                             hintText: 'Password',
-                            fillColor: Colors.grey.withOpacity(0.2),
-                            border: InputBorder.none,
-                            filled: true,
                             suffixIcon: GestureDetector(
                               onTap: _toggleVisibility,
                               child: Icon(
@@ -154,22 +188,35 @@ class _RegisterState extends State<Register> {
                           // The validator receives the text that the user has entered.
                           validator: (value) {
                             if (value.isEmpty) {
-                              return 'Please enter some text';
+                              return 'Please enter your password';
                             }
                             return null;
                           },
+                          onChanged: (value) => password = value.trim(),
                         ),
                       ),
                       Container(
                         width: deviceWidth,
                         margin: EdgeInsets.symmetric(vertical: 15.0),
-                        child: FlatButton(
-                          color: Colors.teal,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(0.0)),
-                          textColor: Colors.white,
-                          onPressed: () {},
-                          child: Text('Create an account'),
+                        child: Builder(
+                          builder: (context) => FlatButton(
+                            color: kPrimaryColor,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(0.0)),
+                            textColor: Colors.white,
+                            onPressed: () async {
+                              //TODO first, you get the longitude and latitude
+
+                              //TODO second, get all variable (company, email, password, longitude and latitude
+
+                              //TODO: third Register the user
+
+                              //TODO: fourth: Create a profile and update the profile
+
+                              //TODO: fifth: Redirect to the dashboard
+                            },
+                            child: Text('Create an account'),
+                          ),
                         ),
                       ),
                       RichText(
@@ -183,7 +230,7 @@ class _RegisterState extends State<Register> {
                           children: <TextSpan>[
                             TextSpan(
                               text: 'Terms of Service',
-                              style: TextStyle(color: Colors.teal),
+                              style: TextStyle(color: kPrimaryColor),
                               recognizer: new TapGestureRecognizer()
                                 ..onTap = () => _launchURL,
                             ),
@@ -191,7 +238,7 @@ class _RegisterState extends State<Register> {
                             TextSpan(
                               text: 'Privacy Policy',
                               style: TextStyle(
-                                color: Colors.teal,
+                                color: kPrimaryColor,
                               ),
                               recognizer: new TapGestureRecognizer()
                                 ..onTap = () => _launchURL,
