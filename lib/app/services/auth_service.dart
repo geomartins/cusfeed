@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:meta/meta.dart';
 
 class AuthService {
   final _auth = FirebaseAuth.instance;
@@ -14,6 +15,7 @@ class AuthService {
 
   Future<FirebaseUser> user() async {
     FirebaseUser firebaseUser;
+
     try {
       firebaseUser = await _auth.currentUser();
     } catch (e) {
@@ -21,6 +23,11 @@ class AuthService {
     }
 
     return firebaseUser;
+  }
+
+  Future<void> updateUserPassword({@required String password}) async {
+    FirebaseUser fbuser = await _auth.currentUser();
+    await fbuser.updatePassword(password);
   }
 
   Future<AuthResult> register(String email, String password) async {

@@ -154,7 +154,8 @@ class _PasswordResetState extends State<PasswordReset>
                                   await Future.delayed(Duration(seconds: 3));
 
                                   //Navigate back to login page
-                                  Navigator.pushNamed(context, Login.id);
+                                  Navigator.pushReplacementNamed(
+                                      context, Login.id);
                                 } catch (e) {
                                   String errorMessage =
                                       mPick.errorLog(code: e.code).toString();

@@ -20,3 +20,5 @@ const kInputDecoration = InputDecoration(
   border: InputBorder.none,
   filled: true,
 );
+
+const kTableName = 'ratings';

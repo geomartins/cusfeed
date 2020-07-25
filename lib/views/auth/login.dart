@@ -23,7 +23,6 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
 
   String email;
   String password;
-
   bool isLoading = false;
 
   @override
@@ -40,7 +39,7 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
 
     controller.addListener(() {
       setState(() {});
-      print(controller.value);
+      //print(controller.value);
     });
 
     controller.forward();

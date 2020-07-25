@@ -5,6 +5,7 @@ import '../../components/reusable_profile_list_tile.dart';
 import '../../app/services/auth_service.dart';
 import '../../config/constants.dart';
 import '../auth/login.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Profile extends StatefulWidget {
   static const String id = '/profile';
@@ -14,6 +15,38 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
+  final Firestore _firestore = Firestore.instance;
+
+  String email;
+  String company;
+  String locality;
+  String avatar;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getProfile();
+  }
+
+  void getProfile() async {
+    final user = await AuthService().user();
+
+    final profiles = await _firestore
+        .collection('profiles')
+        .where('email', isEqualTo: user.email)
+        .getDocuments();
+
+    for (var profile in profiles.documents) {
+      setState(() {
+        email = profile.data['email'];
+        locality = profile.data['locality'] + ', ' + profile.data['country'];
+        company = profile.data['company'];
+        avatar = email.substring(0, 3).toUpperCase();
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     double deviceWidth = MediaQuery.of(context).size.width;
@@ -56,8 +89,8 @@ class _ProfileState extends State<Profile> {
                       backgroundColor: Colors.white,
                       maxRadius: 30.0,
                       child: Text(
-                        'MA',
-                        style: TextStyle(fontSize: 20.0),
+                        avatar ?? '',
+                        style: TextStyle(fontSize: 23.0),
                       ),
                     )
                   ],
@@ -67,19 +100,19 @@ class _ProfileState extends State<Profile> {
             ReusableProfileListTile(
               elevation: 20.0,
               icon: Icons.mail_outline,
-              title: 'martinsabiodun94@gmail.com',
+              title: email ?? ' ',
               subtitle: 'Email Address',
             ),
             ReusableProfileListTile(
               elevation: 10.0,
               icon: Icons.nature,
-              title: 'FoodPark Limited',
+              title: company ?? ' ',
               subtitle: 'Company Name',
             ),
             ReusableProfileListTile(
               elevation: 5.0,
               icon: Icons.location_on,
-              title: 'Lagos Nigeria',
+              title: locality ?? '',
               subtitle: 'Location',
             ),
             Row(
@@ -110,7 +143,7 @@ class _ProfileState extends State<Profile> {
                     onPressed: () async {
                       AuthService authService = new AuthService();
                       await authService.logout();
-                      Navigator.pushNamed(context, Login.id);
+                      Navigator.pushReplacementNamed(context, Login.id);
                     },
                     child: Text(
                       'Logout',

@@ -1,9 +1,15 @@
+import 'package:cusfeed/app/services/auth_service.dart';
 import 'package:cusfeed/config/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 import 'package:flutter/gestures.dart';
 import 'package:url_launcher/url_launcher.dart';
+import '../../app/services/location_service.dart';
+import 'package:geolocator/geolocator.dart';
+import '../../app/repositories/pick.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import '../admin/dashboard.dart';
 
 class Register extends StatefulWidget {
   static const String id = '/register';
@@ -17,13 +23,20 @@ class _RegisterState extends State<Register>
   AnimationController controller;
   Animation animation;
 
+  Firestore _firestore = Firestore.instance;
+
   bool isLoading = false;
   String email;
   String password;
   String company;
 
+  String country;
+  String locality;
+  String isoCountryCode;
+
   @override
   void initState() {
+    getCurrentLocation();
     controller = AnimationController(
       vsync: this,
       duration: Duration(seconds: 2),
@@ -36,13 +49,32 @@ class _RegisterState extends State<Register>
 
     controller.addListener(() {
       setState(() {});
-      print(controller.value);
+      // print(controller.value);
     });
 
     controller.forward();
 
     // TODO: implement initState
     super.initState();
+  }
+
+  void getCurrentLocation() async {
+    try {
+      final position = await LocationService().coordinate();
+
+      List<Placemark> p = await LocationService().addressFromCoordinate(
+          latitude: position.latitude, longitude: position.longitude);
+
+      Placemark place = p[0];
+
+      setState(() {
+        country = place.country;
+        locality = place.locality;
+        isoCountryCode = place.isoCountryCode;
+      });
+    } catch (e) {
+      print(e);
+    }
   }
 
   @override
@@ -65,10 +97,8 @@ class _RegisterState extends State<Register>
   Future<Null> _launchURL() async {
     const url = 'https://agropark.ng';
     if (await canLaunch(url)) {
-      print('Yesss');
       await launch(url);
     } else {
-      print('Noooo');
       throw 'Could not launch $url';
     }
   }
@@ -139,6 +169,7 @@ class _RegisterState extends State<Register>
                             }
                             return null;
                           },
+                          onChanged: (value) => company = value.trim(),
                         ),
                       ),
                       defaultSizedBox,
@@ -205,15 +236,34 @@ class _RegisterState extends State<Register>
                                 borderRadius: BorderRadius.circular(0.0)),
                             textColor: Colors.white,
                             onPressed: () async {
-                              //TODO first, you get the longitude and latitude
+                              setState(() {
+                                isLoading = true;
+                              });
+                              if (_formKey.currentState.validate()) {
+                                try {
+                                  await AuthService().register(email, password);
+                                  await _firestore.collection('profiles').add({
+                                    'email': email,
+                                    'company': company,
+                                    'country': country,
+                                    'locality': locality,
+                                  });
+                                  Navigator.pushReplacementNamed(
+                                      context, Dashboard.id);
+                                } catch (e) {
+                                  String errorMessage =
+                                      mPick.errorLog(code: e.code).toString();
 
-                              //TODO second, get all variable (company, email, password, longitude and latitude
+                                  mPick.notify(
+                                      context: context,
+                                      message: errorMessage,
+                                      color: Colors.red);
+                                }
 
-                              //TODO: third Register the user
-
-                              //TODO: fourth: Create a profile and update the profile
-
-                              //TODO: fifth: Redirect to the dashboard
+                                setState(() {
+                                  isLoading = false;
+                                });
+                              }
                             },
                             child: Text('Create an account'),
                           ),

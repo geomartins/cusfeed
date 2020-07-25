@@ -66,7 +66,7 @@ class ReusableCustomDrawer extends StatelessWidget {
               onPressed: () async {
                 AuthService authService = new AuthService();
                 await authService.logout();
-                Navigator.pushNamed(context, Login.id);
+                Navigator.pushReplacementNamed(context, Login.id);
               },
             ),
           ],

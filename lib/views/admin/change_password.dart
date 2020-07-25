@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:loading_overlay/loading_overlay.dart';
+import '../../app/services/auth_service.dart';
+import '../../app/repositories/pick.dart';
 
 class ChangePassword extends StatefulWidget {
   static const String id = '/change_password';
@@ -13,7 +15,10 @@ class ChangePassword extends StatefulWidget {
 
 class _ChangePasswordState extends State<ChangePassword> {
   final _formKey = GlobalKey<FormState>();
+  String password;
+  String confirmPassword;
 
+  bool isLoading = false;
   bool obscureStatus = true;
   void _toggleVisibility() {
     setState(() {
@@ -48,7 +53,7 @@ class _ChangePasswordState extends State<ChangePassword> {
           ),
         ),
         child: LoadingOverlay(
-          isLoading: false,
+          isLoading: isLoading,
           progressIndicator: kLoadingProgressIndicator,
           color: kLoadingOverlayColor,
           child: SafeArea(
@@ -82,7 +87,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                             obscureText: obscureStatus,
                             style: TextStyle(),
                             decoration: InputDecoration(
-                              hintText: 'Password',
+                              hintText: 'New Password',
                               fillColor: Colors.grey.withOpacity(0.2),
                               border: InputBorder.none,
                               filled: true,
@@ -99,10 +104,11 @@ class _ChangePasswordState extends State<ChangePassword> {
                             // The validator receives the text that the user has entered.
                             validator: (value) {
                               if (value.isEmpty) {
-                                return 'Please enter some text';
+                                return 'Please enter valid password';
                               }
                               return null;
                             },
+                            onChanged: (value) => password = value.trim(),
                           ),
                         ),
                         Container(
@@ -128,24 +134,72 @@ class _ChangePasswordState extends State<ChangePassword> {
                             // The validator receives the text that the user has entered.
                             validator: (value) {
                               if (value.isEmpty) {
-                                return 'Please enter some text';
+                                return 'Please enter valid password confirmation';
+                              }
+
+                              if (value != password) {
+                                return 'password confirmation do not match';
                               }
                               return null;
                             },
+
+                            onChanged: (value) =>
+                                confirmPassword = value.trim(),
                           ),
                         ),
                         Container(
-                          width: deviceWidth,
-                          margin: EdgeInsets.symmetric(vertical: 15.0),
-                          child: FlatButton(
-                            color: kPrimaryColor,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(0.0)),
-                            textColor: Colors.white,
-                            onPressed: () {},
-                            child: Text('Update'),
-                          ),
-                        ),
+                            width: deviceWidth,
+                            margin: EdgeInsets.symmetric(vertical: 15.0),
+                            child: Builder(builder: (context) {
+                              return FlatButton(
+                                color: kPrimaryColor,
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(0.0)),
+                                textColor: Colors.white,
+                                onPressed: () async {
+                                  if (_formKey.currentState.validate()) {
+                                    setState(() {
+                                      isLoading = true;
+                                    });
+
+                                    try {
+                                      await AuthService().updateUserPassword(
+                                          password: password);
+
+                                      //display success message
+                                      mPick.notify(
+                                          context: context,
+                                          message: 'Password update successful',
+                                          color: Colors.green);
+
+                                      //Delay the navigation for 3 seconds
+                                      await Future.delayed(
+                                          Duration(seconds: 3));
+
+                                      Navigator.pop(context);
+                                    } catch (e) {
+                                      String errorMessage = mPick
+                                          .errorLog(code: e.code)
+                                          .toString();
+
+                                      mPick.notify(
+                                          context: context,
+                                          message: errorMessage,
+                                          color: Colors.red);
+
+                                      setState(() {
+                                        isLoading = false;
+                                      });
+                                    }
+
+                                    setState(() {
+                                      isLoading = false;
+                                    });
+                                  }
+                                },
+                                child: Text('Update'),
+                              );
+                            })),
                       ],
                     ),
                   ),

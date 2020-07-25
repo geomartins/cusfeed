@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import '../../components/reusable_custom_drawer.dart';
@@ -11,6 +13,15 @@ class Success extends StatefulWidget {
 }
 
 class _SuccessState extends State<Success> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    Timer(Duration(seconds: 6), () => goBack());
+  }
+
+  void goBack() => Navigator.pop(context);
+
   @override
   Widget build(BuildContext context) {
     double deviceWidth = MediaQuery.of(context).size.width;
