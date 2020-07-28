@@ -4,7 +4,9 @@ const kAppName = 'CusFeed';
 const kFontFamily = 'Roboto-Regular';
 const kFontFamilyLight = 'Roboto-Light';
 const kLoadingOverlayColor = Color(0xFFF9FAFA); //.withOpacity(0.1)
-const kLoadingProgressIndicator = CircularProgressIndicator();
+const kLoadingProgressIndicator = CircularProgressIndicator(
+  backgroundColor: Colors.teal,
+);
 const kAppLogo = "assets/images/logo.png";
 const kAppLogoHeight = 70.0;
 const kAppSplashScreenImage = 'assets/images/android6.png';

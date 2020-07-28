@@ -1,10 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:loading_overlay/loading_overlay.dart';
 import '../../components/reusable_custom_drawer.dart';
 import '../../config/constants.dart';
 import '../../app/services/auth_service.dart';
 import '../../app/middlewares/middleware.dart';
 import '../../components/reusable_rating_panel.dart';
+import 'package:provider/provider.dart';
+import '../../app/data/rating_data.dart';
 
 class Dashboard extends StatefulWidget {
   static const String id = '/dashboard';
@@ -31,6 +34,8 @@ class _DashboardState extends State<Dashboard> {
     print(user.email);
   }
 
+  bool isLoading = false;
+
   @override
   Widget build(BuildContext context) {
     double deviceWidth = MediaQuery.of(context).size.width;
@@ -48,12 +53,17 @@ class _DashboardState extends State<Dashboard> {
         ),
       ),
       drawer: ReusableCustomDrawer(deviceWidth: deviceWidth),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: <Widget>[
-          ReusableRatingPanel(),
-        ],
+      body: LoadingOverlay(
+        isLoading: Provider.of<RatingData>(context, listen: true).isLoading,
+        progressIndicator: kLoadingProgressIndicator,
+        color: kLoadingOverlayColor,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
+            ReusableRatingPanel(),
+          ],
+        ),
       ),
     );
   }

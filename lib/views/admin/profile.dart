@@ -38,6 +38,7 @@ class _ProfileState extends State<Profile> {
         .getDocuments();
 
     for (var profile in profiles.documents) {
+      print(profile);
       setState(() {
         email = profile.data['email'];
         locality = profile.data['locality'] + ', ' + profile.data['country'];

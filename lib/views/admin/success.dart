@@ -17,7 +17,13 @@ class _SuccessState extends State<Success> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    Timer(Duration(seconds: 6), () => goBack());
+    timer();
+  }
+
+  var timerRef;
+  timer() {
+    timerRef = Timer(Duration(seconds: 6), () => goBack());
+    return timerRef;
   }
 
   void goBack() => Navigator.pop(context);
@@ -110,5 +116,12 @@ class _SuccessState extends State<Success> {
         ),
       ),
     );
+  }
+
+  @override
+  void deactivate() {
+    // TODO: implement deactivate
+    super.deactivate();
+    timerRef.cancel();
   }
 }
