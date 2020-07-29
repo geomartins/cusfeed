@@ -1,7 +1,6 @@
 import 'package:cusfeed/config/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
-import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 import '../../app/services/auth_service.dart';
 import '../../app/repositories/pick.dart';

@@ -30,7 +30,7 @@ class Repository {
     Map<String, dynamic> newValue = {};
     var result;
 
-    //first, lets check if the date is avaible
+    //first, lets check if the date is available
     List<Map<String, dynamic>> check = await connection
         .query(table, where: 'date=?', whereArgs: [data['date']]);
 
@@ -52,7 +52,7 @@ class Repository {
     return result;
   }
 
-  readData(String table) async {
+  Future<List<Map<String, dynamic>>> readData(String table) async {
     var connection = await database;
     return await connection.query(table);
   }

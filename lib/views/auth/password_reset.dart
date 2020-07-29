@@ -1,4 +1,3 @@
-import 'dart:math';
 import 'package:cusfeed/app/services/auth_service.dart';
 import 'package:cusfeed/config/constants.dart';
 import 'package:flutter/material.dart';
@@ -141,7 +140,7 @@ class _PasswordResetState extends State<PasswordReset>
 
                               if (_formKey.currentState.validate()) {
                                 try {
-                                  final result = await AuthService()
+                                  await AuthService()
                                       .passwordReset(email: email);
 
                                   //display success message

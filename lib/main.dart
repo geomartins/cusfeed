@@ -13,7 +13,6 @@ import './views/admin/dashboard.dart';
 import './views/admin/history.dart';
 import './views/admin/profile.dart';
 import './views/admin/success.dart';
-import 'package:simple_router/simple_router.dart';
 import 'package:provider/provider.dart';
 import './app/data/rating_data.dart';
 
