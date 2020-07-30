@@ -1,4 +1,5 @@
 import 'package:cusfeed/app/models/rating_model.dart';
+import 'package:cusfeed/components/reusable_history_expansion_tile.dart';
 import 'package:flutter/material.dart';
 import '../../config/constants.dart';
 import '../../app/repositories/repository.dart';
@@ -23,11 +24,14 @@ class _HistoryState extends State<History> {
   Future<void> _fetchData() async {
     List<Map<String, dynamic>> rawDatas =
         await Repository().readData(kTableName);
+    print(rawDatas);
 
     for (Map<String, dynamic> rawData in rawDatas) {
       Map<String, dynamic> convertedRawData =
           RatingConversion(rating: rawData).percentageConversion();
-      datas.add(RatingModel.json(convertedRawData));
+      setState(() {
+        datas.add(RatingModel.json(convertedRawData));
+      });
     }
   }
 
@@ -54,8 +58,111 @@ class _HistoryState extends State<History> {
         ),
         child: ListView.builder(
           itemBuilder: (context, int index) {
-            return ListTile(
-              title: Text(datas[index].createdAt),
+            int total = datas[index].total;
+            String response = total > 1 ? 'responses' : 'response';
+            return ReusableHistoryExpansionTile(
+              title: datas[index].createdAt,
+              subtitle: '$total $response',
+              initiallyExpanded: index == datas.length - 1 ? true : false,
+              child: Wrap(
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Table(
+                      defaultVerticalAlignment:
+                          TableCellVerticalAlignment.middle,
+                      border: TableBorder.all(
+                          color: Colors.black26,
+                          width: 2,
+                          style: BorderStyle.none),
+                      children: [
+                        TableRow(
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              color: kPrimaryColor,
+                            ),
+                          ),
+                          children: [
+                            TableCell(
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Center(
+                                  child: Text('Bad'),
+                                ),
+                              ),
+                            ),
+                            TableCell(
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Center(child: Text('Fair')),
+                              ),
+                            ),
+                            TableCell(
+                                child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Center(child: Text('Good')),
+                            )),
+                            TableCell(
+                                child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Center(child: Text('V- Good')),
+                            )),
+                            TableCell(
+                                child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Center(child: Text('Excellent')),
+                            )),
+                          ],
+                        ),
+                        TableRow(children: [
+                          TableCell(
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Center(
+                                child: Text(datas[index].bad.toString() + '%'),
+                              ),
+                            ),
+                          ),
+                          TableCell(
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Center(
+                                  child:
+                                      Text(datas[index].fair.toString() + '%')),
+                            ),
+                          ),
+                          TableCell(
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Center(
+                                child: Text(datas[index].good.toString() + '%'),
+                              ),
+                            ),
+                          ),
+                          TableCell(
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Center(
+                                child: Text(
+                                    datas[index].veryGood.toString() + '%'),
+                              ),
+                            ),
+                          ),
+                          TableCell(
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Center(
+                                child: Text(
+                                    datas[index].excellent.toString() + '%'),
+                              ),
+                            ),
+                          ),
+                        ]),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             );
           },
           itemCount: datas.length,

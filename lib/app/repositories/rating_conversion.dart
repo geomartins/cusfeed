@@ -25,6 +25,7 @@ class RatingConversion {
       'very_good': ((_veryGood / total) * 100).toInt(),
       'excellent': ((_excellent / total) * 100).toInt(),
       'date': _date,
+      'total': total,
     };
   }
 
