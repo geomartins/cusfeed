@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cusfeed/app/services/auth_service.dart';
 import 'package:cusfeed/config/constants.dart';
 import 'package:flutter/material.dart';
@@ -8,7 +9,6 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../app/services/location_service.dart';
 import 'package:geolocator/geolocator.dart';
 import '../../app/repositories/pick.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import '../admin/dashboard.dart';
 
 class Register extends StatefulWidget {
@@ -23,7 +23,7 @@ class _RegisterState extends State<Register>
   AnimationController controller;
   Animation animation;
 
-  Firestore _firestore = Firestore.instance;
+  //Firestore _firestore = Firestore.instance;
 
   bool isLoading = false;
   String email;
@@ -241,13 +241,13 @@ class _RegisterState extends State<Register>
                               });
                               if (_formKey.currentState.validate()) {
                                 try {
-                                  await AuthService().register(email, password);
-                                  await _firestore.collection('profiles').add({
-                                    'email': email,
-                                    'company': company,
-                                    'country': country,
-                                    'locality': locality,
-                                  });
+                                  // await AuthService().register(email, password);
+                                  // await _firestore.collection('profiles').add({
+                                  //   'email': email,
+                                  //   'company': company,
+                                  //   'country': country,
+                                  //   'locality': locality,
+                                  // });
                                   Navigator.pushReplacementNamed(
                                       context, Dashboard.id);
                                 } catch (e) {

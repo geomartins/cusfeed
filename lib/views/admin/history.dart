@@ -1,9 +1,9 @@
-import 'package:cusfeed/app/models/rating_model.dart';
 import 'package:cusfeed/components/reusable_history_expansion_tile.dart';
 import 'package:flutter/material.dart';
 import '../../config/constants.dart';
 import '../../app/repositories/repository.dart';
 import '../../app/repositories/rating_conversion.dart';
+import 'package:cusfeed/models/rating_model.dart';
 
 class History extends StatefulWidget {
   static const String id = '/history';

@@ -206,9 +206,9 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                               });
                               if (_formKey.currentState.validate()) {
                                 try {
-                                  await AuthService()
-                                      .login(email: email, password: password);
-                                  Navigator.pushNamed(context, Dashboard.id);
+                                  // await AuthService()
+                                  //     .login(email: email, password: password);
+                                  // Navigator.pushNamed(context, Dashboard.id);
                                 } catch (e) {
                                   String errorMessage =
                                       mPick.errorLog(code: e.code).toString();

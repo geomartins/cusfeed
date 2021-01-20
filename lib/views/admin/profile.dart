@@ -15,7 +15,7 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
-  final Firestore _firestore = Firestore.instance;
+  //final Firestore _firestore = Firestore.instance;
 
   String email;
   String company;
@@ -30,22 +30,22 @@ class _ProfileState extends State<Profile> {
   }
 
   void getProfile() async {
-    final user = await AuthService().user();
-
-    final profiles = await _firestore
-        .collection('profiles')
-        .where('email', isEqualTo: user.email)
-        .getDocuments();
-
-    for (var profile in profiles.documents) {
-      print(profile);
-      setState(() {
-        email = profile.data['email'];
-        locality = profile.data['locality'] + ', ' + profile.data['country'];
-        company = profile.data['company'];
-        avatar = email.substring(0, 3).toUpperCase();
-      });
-    }
+    // final user = await AuthService().user();
+    //
+    // final profiles = await _firestore
+    //     .collection('profiles')
+    //     .where('email', isEqualTo: user.email)
+    //     .getDocuments();
+    //
+    // for (var profile in profiles.documents) {
+    //   print(profile);
+    //   setState(() {
+    //     email = profile.data['email'];
+    //     locality = profile.data['locality'] + ', ' + profile.data['country'];
+    //     company = profile.data['company'];
+    //     avatar = email.substring(0, 3).toUpperCase();
+    //   });
+    // }
   }
 
   @override
@@ -142,9 +142,9 @@ class _ProfileState extends State<Profile> {
                       color: Theme.of(context).buttonColor,
                     ),
                     onPressed: () async {
-                      AuthService authService = new AuthService();
-                      await authService.logout();
-                      Navigator.pushReplacementNamed(context, Login.id);
+                      // AuthService authService = new AuthService();
+                      // await authService.logout();
+                      // Navigator.pushReplacementNamed(context, Login.id);
                     },
                     child: Text(
                       'Logout',

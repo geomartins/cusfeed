@@ -1,34 +1,116 @@
 {
   "project_info": {
-    "project_number": "440148160842",
-    "firebase_url": "https://cusfeed-793d8.firebaseio.com",
-    "project_id": "cusfeed-793d8",
-    "storage_bucket": "cusfeed-793d8.appspot.com"
+    "project_number": "568815498090",
+    "firebase_url": "https://agropark-76f03.firebaseio.com",
+    "project_id": "agropark-76f03",
+    "storage_bucket": "agropark-76f03.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:440148160842:android:7fd8d2c2d100cb09c111b3",
+        "mobilesdk_app_id": "1:568815498090:android:c5eabfba466476c3016b13",
         "android_client_info": {
-          "package_name": "com.nairafox.cusfeed"
+          "package_name": "ng.agropark.cusfeed"
         }
       },
       "oauth_client": [
         {
-          "client_id": "440148160842-dmo6ahf7fq807tpf92gf64hicrav3l5h.apps.googleusercontent.com",
+          "client_id": "568815498090-np998eqi7gm1k6i48es55nq9qmdvlcfe.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ng.agropark.cusfeed",
+            "certificate_hash": "cf3e3ce9dfe1bff914f9297fa17caf4c9e183e5c"
+          }
+        },
+        {
+          "client_id": "568815498090-3ia68ak001l8nf3gsbndl0r4e9v9q4j7.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDYgKJEHJfL_j1Spja_wn3HPyweRykZzWQ"
+          "current_key": "AIzaSyAJ25eLWoGdTuDcHRuxqTeel_Uh-_cIhSM"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "440148160842-dmo6ahf7fq807tpf92gf64hicrav3l5h.apps.googleusercontent.com",
+              "client_id": "568815498090-3ia68ak001l8nf3gsbndl0r4e9v9q4j7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:568815498090:android:b1de1042cda9930e016b13",
+        "android_client_info": {
+          "package_name": "ng.agropark.deft"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "568815498090-1vctmuj8s086fv7qe9fvjoctka87t7rn.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ng.agropark.deft",
+            "certificate_hash": "cf3e3ce9dfe1bff914f9297fa17caf4c9e183e5c"
+          }
+        },
+        {
+          "client_id": "568815498090-3ia68ak001l8nf3gsbndl0r4e9v9q4j7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAJ25eLWoGdTuDcHRuxqTeel_Uh-_cIhSM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "568815498090-3ia68ak001l8nf3gsbndl0r4e9v9q4j7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:568815498090:android:6dd101d17cd19ef9016b13",
+        "android_client_info": {
+          "package_name": "ng.agropark.kenzo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "568815498090-7op37iu2ts9gb149kk5kp5urj4gd7jn9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ng.agropark.kenzo",
+            "certificate_hash": "cf3e3ce9dfe1bff914f9297fa17caf4c9e183e5c"
+          }
+        },
+        {
+          "client_id": "568815498090-3ia68ak001l8nf3gsbndl0r4e9v9q4j7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAJ25eLWoGdTuDcHRuxqTeel_Uh-_cIhSM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "568815498090-3ia68ak001l8nf3gsbndl0r4e9v9q4j7.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

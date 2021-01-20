@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'config/constants.dart';
 import 'intro.dart';
@@ -5,7 +6,6 @@ import './views/auth/login.dart';
 import './views/auth/register.dart';
 import './views/auth/password_reset.dart';
 import './views/error/page_not_found.dart';
-
 import './views/welcome.dart';
 import './views/admin/change_password.dart';
 import './views/admin/contact_us.dart';
@@ -17,6 +17,9 @@ import 'package:provider/provider.dart';
 import './app/data/rating_data.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+
   runApp(
     ChangeNotifierProvider(
       create: (context) => RatingData(),
@@ -72,8 +75,6 @@ void main() async {
           Success.id: (BuildContext ctx) => Success(),
         },
         onUnknownRoute: (RouteSettings setting) {
-          String unknownRoute = setting.name;
-          print(unknownRoute);
           return new MaterialPageRoute(
             builder: (context) => PageNotFound(),
           );

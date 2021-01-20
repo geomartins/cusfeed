@@ -162,8 +162,8 @@ class _ChangePasswordState extends State<ChangePassword> {
                                     });
 
                                     try {
-                                      await AuthService().updateUserPassword(
-                                          password: password);
+                                      // await AuthService().updateUserPassword(
+                                      //     password: password);
 
                                       //display success message
                                       mPick.notify(

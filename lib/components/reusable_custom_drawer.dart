@@ -64,8 +64,8 @@ class ReusableCustomDrawer extends StatelessWidget {
               icon: FontAwesome.sign_out,
               text: 'Sign Out',
               onPressed: () async {
-                AuthService authService = new AuthService();
-                await authService.logout();
+                // AuthService authService = new AuthService();
+                // await authService.logout();
                 Navigator.pushReplacementNamed(context, Login.id);
               },
             ),

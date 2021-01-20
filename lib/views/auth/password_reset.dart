@@ -140,8 +140,8 @@ class _PasswordResetState extends State<PasswordReset>
 
                               if (_formKey.currentState.validate()) {
                                 try {
-                                  await AuthService()
-                                      .passwordReset(email: email);
+                                  // await AuthService()
+                                  //     .passwordReset(email: email);
 
                                   //display success message
                                   mPick.notify(

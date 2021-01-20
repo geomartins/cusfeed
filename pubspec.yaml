@@ -30,9 +30,9 @@ dependencies:
   url_launcher: ^5.4.11
   flutter_vector_icons: ^0.2.1
   flutter_emoji: ^2.2.1+1
-  firebase_core: ^0.4.5
-  firebase_auth: ^0.16.1
-  cloud_firestore: ^0.13.7
+  firebase_core: "0.7.0"
+  firebase_auth: "^0.20.0+1"
+  cloud_firestore: "^0.16.0"
   simple_router: ^0.1.0+1
   get: ^2.5.2
   geolocation: ^1.1.2
@@ -41,6 +41,8 @@ dependencies:
   path_provider: ^1.6.11
   intl: ^0.16.1
   provider: ^4.0.2
+  change_app_package_name: ^0.1.2
+
 
 
 

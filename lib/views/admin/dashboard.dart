@@ -21,7 +21,7 @@ class _DashboardState extends State<Dashboard> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    middleware(); //Middleware
+    // middleware(); //Middleware
     getInfo();
   }
 
@@ -30,8 +30,8 @@ class _DashboardState extends State<Dashboard> {
   }
 
   void getInfo() async {
-    FirebaseUser user = await AuthService().user();
-    print(user.email);
+    //FirebaseUser user = await AuthService().user();
+    //print(user.email);
   }
 
   bool isLoading = false;
